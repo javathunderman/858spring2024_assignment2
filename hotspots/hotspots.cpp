@@ -17,7 +17,7 @@ using graph = nested_seq;
 using utils = graph_utils<vertex>;
 
 int main(int argc, char* argv[]) {
-	auto usage = "Usage: BFS <n> || BFS <filename>";
+	auto usage = "Usage: ./hotspots <n> || ./hotspots <filename>";
 	if (argc != 2) std::cout << usage << std::endl;
 	else {
 		long n = 0;
@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
 
 		parlay::sequence<vertex> result;
 		parlay::internal::timer t("time");
-		for (int i=0; i < 3; i++) {
+		for (int i = 0; i < 3; i++) {
 			result = hotspots(U, G);
 			t.next("hotspot");
 		}

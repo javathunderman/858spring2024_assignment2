@@ -1,3 +1,6 @@
+#ifndef _HOTSPOTS_H_
+#define _HOTSPOTS_H_
+
 #include <atomic>
 #include "parlay/primitives.h"
 #include "parlay/sequence.h"
@@ -19,3 +22,5 @@ auto hotspots(parlay::sequence<vertex> U, const graph& G) {
 	// convert from sequence of atomics to a regular sequence
 	return parlay::tabulate(n, [&] (long i) {return nearest[i].load();});
 }
+
+#endif
