@@ -1,24 +1,24 @@
-# Assignment 2
+# Problem 1: Hotspots
 
 You need to implement the function "hotspots" in the file hotspot.h
 
 To install parlay and download the graph files:
 
-`> make install`
+`> mkdir build
+ > cd build
+ > cmake ..
 
-To compile:
+To compile from inside the build folder:
 
-`> make hotspots`
+`> make
 
 To run:
 
-`> make runsmall`
+`> ./hotspots 100
 
 or
 
-`> make runlarge`
+`> ./hotspots graph_data/com_orkut_sym.adj
 
-These should all run with the stub that is included, but, of course, not give the right answers.
-
-You can look into the Makefile to see what they are doing.
+These should all run with the stub that is included but not give the right answers.
 
