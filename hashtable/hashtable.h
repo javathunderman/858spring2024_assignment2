@@ -1,40 +1,17 @@
 #ifndef _HASHTABLE_H_
 #define _HASHTABLE_H_
 
+#include <cstdlib>
 #include <cstdint>
 #include <vector>
 #include <atomic>
 
+#include "parlay/sequence.h"
+
 template <typename key_t>
 class hashtable {
-	parlay::sequence<std::atomic<key_t>> table;
-	std::vector<bool> exists;
-
-	hashtable(const size_t size) {
-		table = parlay::sequence<std::atomic<key_t>>::uninitialized(size);
-		exists = std::vector<bool>(size, 0);
-	}
-
-	bool insert(key_t key) {
-		// To be implemented
-		return false;
-	}
-
-	bool remove(key_t key) {
-		// To be implemented
-		return false;
-	}
-
-	bool find(key_t key) {
-		// To be implemented
-		return false;
-	}
-
-	bool cas(size_t index, val_t& exp, val_t& upd) {
-		return table[index].compare_exchange_strong(exp, upd);
-	}
-
-	size_t hash(const key_t& key, uint32_t seed) {
+	uint32_t seed;
+	size_t hash(const key_t& key) {
 		const int len = sizeof(key_t);
 		const uint64_t m = 0xc6a4a7935bd1e995;
 		const int r = 47;
@@ -46,11 +23,9 @@ class hashtable {
 
 		while (data != end) {
 			uint64_t k = *data++;
-
 			k *= m;
 			k ^= k >> r;
 			k *= m;
-
 			h ^= k;
 			h *= m;
 		}
@@ -73,6 +48,34 @@ class hashtable {
 
 		return h;
 	}
-}
+
+	bool cas(size_t index, key_t& exp, key_t& upd) {
+		return table[index].compare_exchange_strong(exp, upd);
+	}
+
+	parlay::sequence<std::atomic<key_t>> table;
+
+public:
+	hashtable(const size_t size) {
+		seed = rand();
+		table = parlay::sequence<std::atomic<key_t>>(size);
+	}
+
+	// Returns true if found, false otherwise
+	bool find(key_t key) {
+		// To be implemented
+		return false;
+	}
+
+	// Inserts the given key, if it doesn't already exist
+	void insert(key_t key) {
+		// To be implemented
+	}
+
+	// Deletes the given key, if it exists
+	void remove(key_t key) {
+		// To be implemented
+	}
+};
 
 #endif

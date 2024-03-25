@@ -1,10 +1,16 @@
 #include <iostream>
 #include <string>
+#include <cstdlib>
+#include <ctime>
+
+#include "parlay/primitives.h"
+#include "parlay/sequence.h"
+#include "parlay/internal/get_time.h"
 
 #include "hashtable.h"
 
 int main(int argc, char **argv) {
-	auto usage = "hash_map <n>";
+	auto usage = "Usage: ./hashtable <n>";
 	if (argc != 2) std::cout << usage << std::endl;
 	else {
 		long n;
@@ -12,26 +18,27 @@ int main(int argc, char **argv) {
 		catch (...) { std::cout << usage << std::endl; return 1; }
 
 		parlay::random_generator gen(0);
-		std::uniform_int_distribution<long> dis(0, n);
+		std::uniform_int_distribution<long> dis(1, n);
 
-		// generate n random keys
+		// generate n random nonzero keys
 		auto pairs = parlay::tabulate(n, [&] (long i) {
 				auto r = gen[i];
-				return std::pair<long, long>{dis(r),i};});
+				return dis(r);});
 
-		parlay::sequence<long> keys;
+		srand(time(NULL));
 		parlay::internal::timer t("Time");
 		for (int i = 0; i < 3; i++) {
-			hash_map<long, long> m(n);
+			hashtable<long> ht(n);
 			t.next("construct");
 			parlay::for_each(pairs, [&] (auto p) {
-					m.insert(p.first, p.second);});
+					ht.insert(p);});
 			t.next("insert");
 			parlay::for_each(pairs, [&] (auto p) {
-					m.find(p.second);});
+					ht.find(p);});
 			t.next("find");
+			parlay::for_each(pairs, [&] (auto p) {
+					ht.remove(p);});
+			t.next("remove");
 		}
-
-		std::cout << "num unique keys: " << keys.size() << std::endl;
 	}
 }
