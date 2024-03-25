@@ -5,7 +5,9 @@ You need to implement the function "hotspots" in the file hotspot.h
 To install parlay and download the graph files:
 
 `> mkdir build`
+
 `> cd build`
+
 `> cmake ..`
 
 To compile from inside the build folder:

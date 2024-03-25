@@ -5,7 +5,9 @@ You need to implement the functions "find", "insert", and "remove" in the file h
 To install parlay and prepare for compilation:
 
 `> mkdir build`
+
 `> cd build`
+
 `> cmake ..`
 
 To compile from inside the build folder:
