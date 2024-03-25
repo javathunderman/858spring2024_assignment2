@@ -1,4 +1,4 @@
-# Problem 1: Hotspots
+# Problem 2: Phase-concurrent hash table
 
 You need to implement the functions "find", "insert", and "remove" in the file hashtable.h
 
