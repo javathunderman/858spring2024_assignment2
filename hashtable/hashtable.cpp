@@ -28,7 +28,7 @@ int main(int argc, char **argv) {
 		srand(time(NULL));
 		parlay::internal::timer t("Time");
 		for (int i = 0; i < 3; i++) {
-			hashtable<long> ht(n);
+			hashtable<long> ht(size_t(n * 1.44));
 			t.next("construct");
 			parlay::for_each(pairs, [&] (auto p) {
 					ht.insert(p);});
