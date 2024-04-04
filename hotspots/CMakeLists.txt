@@ -18,26 +18,28 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(parlaylib)
 
-set(GRAPH_FILE "${CMAKE_BINARY_DIR}/graph_data.tar.bz2")
-message(STATUS "Downloading graph data...")
-file(DOWNLOAD http://www.cs.cmu.edu/~parlay/graph_data.tar.bz2 ${GRAPH_FILE}
-     SHOW_PROGRESS
-     STATUS download_status
-     LOG download_log)
-list(GET download_status 0 status_code)
-if(NOT status_code EQUAL 0)
-    message(FATAL_ERROR "Error downloading graph data: ${download_log}")
-endif()
+if(NOT EXISTS "${CMAKE_BINARY_DIR}/graph_data/youtube_sym.adj")
+	set(GRAPH_FILE "${CMAKE_BINARY_DIR}/graph_data.tar.bz2")
+	message(STATUS "Downloading graph data...")
+	file(DOWNLOAD http://www.cs.cmu.edu/~parlay/graph_data.tar.bz2 ${GRAPH_FILE}
+			SHOW_PROGRESS
+			STATUS download_status
+			LOG download_log)
+	list(GET download_status 0 status_code)
+	if(NOT status_code EQUAL 0)
+		message(FATAL_ERROR "Error downloading graph data: ${download_log}")
+	endif()
 
-message(STATUS "Extracting graph data...")
-execute_process(COMMAND ${CMAKE_COMMAND} -E tar -xjf ${GRAPH_FILE}
-                RESULT_VARIABLE tar_result
-                OUTPUT_VARIABLE tar_output
-                ERROR_VARIABLE tar_error)
-if(NOT tar_result EQUAL 0)
-    message(FATAL_ERROR "Error extracting graph data: ${tar_error}")
-endif()
+	message(STATUS "Extracting graph data...")
+	execute_process(COMMAND ${CMAKE_COMMAND} -E tar -xjf ${GRAPH_FILE}
+			RESULT_VARIABLE tar_result
+			OUTPUT_VARIABLE tar_output
+			ERROR_VARIABLE tar_error)
+	if(NOT tar_result EQUAL 0)
+		message(FATAL_ERROR "Error extracting graph data: ${tar_error}")
+	endif()
 file(REMOVE ${GRAPH_FILE})
+endif()
 
 add_executable(hotspots hotspots.cpp)
 target_include_directories(hotspots PRIVATE ${parlaylib_SOURCE_DIR} ${parlaylib_SOURCE_DIR}/include/)
