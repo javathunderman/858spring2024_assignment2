@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.14)
 project(Hotspots)
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
 find_program(JEMALLOC_FOUND jemalloc-config)
 if(JEMALLOC_FOUND)
 	execute_process(
@@ -9,6 +12,9 @@ if(JEMALLOC_FOUND)
 		OUTPUT_STRIP_TRAILING_WHITESPACE)
 	set(JEMALLOC_LIBS "${JEMALLOC_LIBS} -ljemalloc")
 endif()
+
+# Define the directory where the library should be cloned
+set(PARLAYLIB_DIR "${CMAKE_SOURCE_DIR}/parlaylib")
 
 include(FetchContent)
 FetchContent_Declare(
@@ -43,4 +49,4 @@ endif()
 
 add_executable(hotspots hotspots.cpp)
 target_include_directories(hotspots PRIVATE ${parlaylib_SOURCE_DIR} ${parlaylib_SOURCE_DIR}/include/)
-target_link_libraries(hotspots PRIVATE ${JEMALLOC_LIBS})
+target_link_libraries(hotspots PRIVATE ${JEMALLOC_LIBS} "-pthread")
