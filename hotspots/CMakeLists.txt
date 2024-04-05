@@ -13,9 +13,6 @@ if(JEMALLOC_FOUND)
 	set(JEMALLOC_LIBS "${JEMALLOC_LIBS} -ljemalloc")
 endif()
 
-# Define the directory where the library should be cloned
-set(PARLAYLIB_DIR "${CMAKE_SOURCE_DIR}/parlaylib")
-
 include(FetchContent)
 FetchContent_Declare(
 	parlaylib
