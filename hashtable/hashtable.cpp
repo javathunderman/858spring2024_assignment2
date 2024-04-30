@@ -21,7 +21,7 @@ int main(int argc, char **argv) {
 		std::uniform_int_distribution<long> dis(1, n);
 
 		// generate n random nonzero keys
-		auto pairs = parlay::tabulate(n, [&] (long i) {
+		auto inserts = parlay::tabulate(n, [&] (long i) {
 				auto r = gen[i];
 				return dis(r);});
 
@@ -30,13 +30,13 @@ int main(int argc, char **argv) {
 		for (int i = 0; i < 3; i++) {
 			hashtable<long> ht(size_t(n * 1.44));
 			t.next("construct");
-			parlay::for_each(pairs, [&] (auto p) {
+			parlay::for_each(inserts, [&] (auto p) {
 					ht.insert(p);});
 			t.next("insert");
-			parlay::for_each(pairs, [&] (auto p) {
+			parlay::for_each(inserts, [&] (auto p) {
 					ht.find(p);});
 			t.next("find");
-			parlay::for_each(pairs, [&] (auto p) {
+			parlay::for_each(parlay::remove_duplicates(inserts), [&] (auto p) {
 					ht.remove(p);});
 			t.next("remove");
 		}
