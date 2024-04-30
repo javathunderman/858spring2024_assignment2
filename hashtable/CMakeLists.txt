@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.14)
 project(Hashtable)
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
 find_program(JEMALLOC_FOUND jemalloc-config)
 if(JEMALLOC_FOUND)
 	execute_process(
@@ -20,4 +23,4 @@ FetchContent_MakeAvailable(parlaylib)
 
 add_executable(hashtable hashtable.cpp)
 target_include_directories(hashtable PRIVATE ${parlaylib_SOURCE_DIR} ${parlaylib_SOURCE_DIR}/include/)
-target_link_libraries(hashtable PRIVATE ${JEMALLOC_LIBS})
+target_link_libraries(hashtable PRIVATE ${JEMALLOC_LIBS} "-pthread")
